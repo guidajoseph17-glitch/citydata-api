@@ -21,6 +21,14 @@ app.use(helmet());
 app.use(cors());
 app.use(express.json());
 
+// Serve static files
+app.use(express.static('public'));
+
+// Serve the website at root
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
 // Rate limiting
 const createRateLimit = (windowMs, max) => rateLimit({
   windowMs,
