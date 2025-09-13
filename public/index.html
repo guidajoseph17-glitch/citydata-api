@@ -1,470 +1,74 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CityData API - The Most Comprehensive City Data API</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>CityData API</title>
     <style>
-        .gradient-bg {
-            background: linear-gradient(135deg, #1e40af 0%, #1e3a8a 100%);
-        }
-        .hero-pattern {
-            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-        }
+        body { font-family: Arial, sans-serif; margin: 0; padding: 20px; background: #f5f5f5; }
+        .container { max-width: 800px; margin: 0 auto; background: white; padding: 40px; border-radius: 10px; }
+        .hero { text-align: center; margin-bottom: 40px; }
+        .btn { background: #007bff; color: white; padding: 15px 30px; border: none; border-radius: 5px; font-size: 16px; cursor: pointer; }
+        .btn:hover { background: #0056b3; }
+        .code { background: #f8f9fa; padding: 15px; border-radius: 5px; font-family: monospace; margin: 20px 0; }
     </style>
 </head>
-<body class="bg-white">
-    <!-- Navigation -->
-    <nav class="bg-white shadow-lg sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center py-4">
-                <div class="flex items-center">
-                    <svg class="w-8 h-8 text-blue-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4"></path>
-                    </svg>
-                    <span class="text-2xl font-bold text-gray-900">CityData API</span>
-                </div>
-                
-                <div class="hidden md:flex space-x-8">
-                    <a href="#features" class="text-gray-700 hover:text-blue-600 font-medium">Features</a>
-                    <a href="#pricing" class="text-gray-700 hover:text-blue-600 font-medium">Pricing</a>
-                    <a href="#docs" class="text-gray-700 hover:text-blue-600 font-medium">API Docs</a>
-                    <a href="#contact" class="text-gray-700 hover:text-blue-600 font-medium">Contact</a>
-                </div>
-                
-                <div class="hidden md:block">
-                    <button onclick="showSignup()" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors font-medium">
-                        Get Started Free
-                    </button>
-                </div>
-            </div>
+<body>
+    <div class="container">
+        <div class="hero">
+            <h1>🏙️ CityData API</h1>
+            <h2>The Most Comprehensive City Data API</h2>
+            <p>Get real-time data for 100+ US cities including demographics, real estate prices, crime rates, school ratings, and investment metrics.</p>
+            <button class="btn" onclick="testAPI()">🧪 Test API Now</button>
         </div>
-    </nav>
 
-    <!-- Hero Section -->
-    <section class="gradient-bg hero-pattern text-white py-20">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h1 class="text-5xl md:text-6xl font-bold mb-6">
-                The Most Comprehensive<br />
-                <span class="text-blue-200">City Data API</span>
-            </h1>
-            <p class="text-xl md:text-2xl text-blue-100 mb-8 max-w-3xl mx-auto">
-                Power your applications with real-time city insights, demographics, market trends, 
-                and location intelligence from 100+ major US cities.
-            </p>
-            <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                <button onclick="showSignup()" class="bg-white text-blue-600 px-8 py-4 rounded-lg font-semibold hover:bg-gray-100 transition-colors text-lg">
-                    Start Free Trial →
-                </button>
-                <button onclick="scrollToSection('docs')" class="border-2 border-white text-white px-8 py-4 rounded-lg font-semibold hover:bg-white hover:text-blue-600 transition-colors text-lg">
-                    📖 View API Docs
-                </button>
-            </div>
+        <div>
+            <h3>📊 What You Get:</h3>
+            <ul>
+                <li><strong>Demographics:</strong> Population, income, education levels</li>
+                <li><strong>Real Estate:</strong> Home prices, rents, market trends</li>
+                <li><strong>Quality of Life:</strong> Crime rates, school ratings, walkability</li>
+                <li><strong>Investment Data:</strong> Cap rates, ROI calculations, growth potential</li>
+            </ul>
         </div>
-    </section>
 
-    <!-- Stats Section -->
-    <section class="py-12 bg-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-                <div>
-                    <div class="text-3xl font-bold text-blue-600">100+</div>
-                    <div class="text-gray-600">US Cities</div>
-                </div>
-                <div>
-                    <div class="text-3xl font-bold text-blue-600">50+</div>
-                    <div class="text-gray-600">Data Points</div>
-                </div>
-                <div>
-                    <div class="text-3xl font-bold text-blue-600">99.9%</div>
-                    <div class="text-gray-600">Uptime</div>
-                </div>
-                <div>
-                    <div class="text-3xl font-bold text-blue-600">1000+</div>
-                    <div class="text-gray-600">Free API Calls</div>
-                </div>
+        <div>
+            <h3>🚀 Try It Now:</h3>
+            <div class="code">
+curl -H "Authorization: Bearer cd_demo_12345abcdef" \<br>
+&nbsp;&nbsp;&nbsp;&nbsp;"https://web-production-b2ad.up.railway.app/api/v1/cities/austin-tx"
             </div>
+            <button class="btn" onclick="testAPI()">Test This API Call</button>
+            <div id="result" style="margin-top: 20px; padding: 10px; background: #e9ecef; border-radius: 5px; display: none;"></div>
         </div>
-    </section>
 
-    <!-- Features Section -->
-    <section id="features" class="py-20 bg-gray-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
-                <h2 class="text-4xl font-bold text-gray-900 mb-4">Everything You Need</h2>
-                <p class="text-xl text-gray-600">Comprehensive city data in a simple, powerful API</p>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <!-- Feature 1 -->
-                <div class="bg-white rounded-xl shadow-lg p-8 hover:shadow-xl transition-shadow">
-                    <div class="bg-blue-100 rounded-lg p-3 w-fit mb-6">
-                        <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"></path>
-                        </svg>
-                    </div>
-                    <h3 class="text-xl font-bold text-gray-900 mb-4">Demographics & Economics</h3>
-                    <p class="text-gray-600 mb-6">Population, income, education, employment rates, and cost of living data from US Census and BLS.</p>
-                    <ul class="space-y-2">
-                        <li class="flex items-center text-sm text-gray-700">
-                            <span class="text-green-500 mr-2">✓</span>
-                            Real-time census data
-                        </li>
-                        <li class="flex items-center text-sm text-gray-700">
-                            <span class="text-green-500 mr-2">✓</span>
-                            Economic indicators
-                        </li>
-                        <li class="flex items-center text-sm text-gray-700">
-                            <span class="text-green-500 mr-2">✓</span>
-                            Historical trends
-                        </li>
-                    </ul>
+        <div style="margin-top: 40px;">
+            <h3>💰 Pricing:</h3>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
+                <div style="border: 1px solid #ddd; padding: 20px; border-radius: 5px;">
+                    <h4>Free</h4>
+                    <p><strong>$0/month</strong></p>
+                    <p>1,000 API calls<br>Basic city data<br>Email support</p>
+                    <button class="btn" onclick="signup()">Get Started</button>
                 </div>
-
-                <!-- Feature 2 -->
-                <div class="bg-white rounded-xl shadow-lg p-8 hover:shadow-xl transition-shadow">
-                    <div class="bg-green-100 rounded-lg p-3 w-fit mb-6">
-                        <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
-                        </svg>
-                    </div>
-                    <h3 class="text-xl font-bold text-gray-900 mb-4">Real Estate Intelligence</h3>
-                    <p class="text-gray-600 mb-6">Market trends, rental yields, price-to-income ratios, and investment potential analysis.</p>
-                    <ul class="space-y-2">
-                        <li class="flex items-center text-sm text-gray-700">
-                            <span class="text-green-500 mr-2">✓</span>
-                            Market analysis
-                        </li>
-                        <li class="flex items-center text-sm text-gray-700">
-                            <span class="text-green-500 mr-2">✓</span>
-                            ROI calculations
-                        </li>
-                        <li class="flex items-center text-sm text-gray-700">
-                            <span class="text-green-500 mr-2">✓</span>
-                            Investment scoring
-                        </li>
-                    </ul>
+                <div style="border: 2px solid #007bff; padding: 20px; border-radius: 5px;">
+                    <h4>Starter 🌟</h4>
+                    <p><strong>$49/month</strong></p>
+                    <p>10,000 API calls<br>Full dataset<br>Priority support</p>
+                    <button class="btn" onclick="signup()">Start Trial</button>
                 </div>
-
-                <!-- Feature 3 -->
-                <div class="bg-white rounded-xl shadow-lg p-8 hover:shadow-xl transition-shadow">
-                    <div class="bg-purple-100 rounded-lg p-3 w-fit mb-6">
-                        <svg class="w-8 h-8 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
-                        </svg>
-                    </div>
-                    <h3 class="text-xl font-bold text-gray-900 mb-4">Quality of Life Metrics</h3>
-                    <p class="text-gray-600 mb-6">Crime rates, school ratings, walkability, weather, and lifestyle indicators.</p>
-                    <ul class="space-y-2">
-                        <li class="flex items-center text-sm text-gray-700">
-                            <span class="text-green-500 mr-2">✓</span>
-                            Safety scores
-                        </li>
-                        <li class="flex items-center text-sm text-gray-700">
-                            <span class="text-green-500 mr-2">✓</span>
-                            School ratings
-                        </li>
-                        <li class="flex items-center text-sm text-gray-700">
-                            <span class="text-green-500 mr-2">✓</span>
-                            Climate data
-                        </li>
-                    </ul>
+                <div style="border: 1px solid #ddd; padding: 20px; border-radius: 5px;">
+                    <h4>Professional</h4>
+                    <p><strong>$199/month</strong></p>
+                    <p>100,000 API calls<br>Real-time updates<br>Phone support</p>
+                    <button class="btn" onclick="signup()">Contact Sales</button>
                 </div>
             </div>
-        </div>
-    </section>
-
-    <!-- API Example Section -->
-    <section id="docs" class="py-20 bg-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
-                <h2 class="text-4xl font-bold text-gray-900 mb-4">Simple to Use</h2>
-                <p class="text-xl text-gray-600">Get started with just one API call</p>
-            </div>
-
-            <div class="bg-gray-900 rounded-xl p-8 text-white font-mono text-sm overflow-x-auto">
-                <div class="text-green-400 mb-2"># Get comprehensive city data</div>
-                <div class="text-gray-300">curl -H <span class="text-yellow-300">"Authorization: Bearer YOUR_API_KEY"</span> \</div>
-                <div class="text-blue-400 ml-5">https://api.citydata.com/v1/cities/austin-tx</div>
-                
-                <div class="mt-6 text-gray-400">{</div>
-                <div class="ml-4 text-blue-300">"city_name": "Austin",</div>
-                <div class="ml-4 text-blue-300">"state": "TX",</div>
-                <div class="ml-4 text-blue-300">"population": 964254,</div>
-                <div class="ml-4 text-blue-300">"median_income": 78084,</div>
-                <div class="ml-4 text-blue-300">"median_home_price": 589000,</div>
-                <div class="ml-4 text-blue-300">"crime_index": 42.1,</div>
-                <div class="ml-4 text-blue-300">"school_rating": 8.2,</div>
-                <div class="ml-4 text-blue-300">"cap_rate": 0.064</div>
-                <div class="text-gray-400">}</div>
-            </div>
-
-            <div class="mt-8 text-center">
-                <button onclick="testAPI()" class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors font-medium">
-                    🧪 Test API Call
-                </button>
-                <div id="api-result" class="mt-4 text-sm text-gray-600"></div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Pricing Section -->
-    <section id="pricing" class="py-20 bg-gray-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
-                <h2 class="text-4xl font-bold text-gray-900 mb-4">Simple, Transparent Pricing</h2>
-                <p class="text-xl text-gray-600">Choose the plan that fits your needs</p>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-                <!-- Free Plan -->
-                <div class="bg-white rounded-2xl shadow-xl border-2 border-gray-200 p-8 hover:shadow-2xl transition-all">
-                    <div class="text-center mb-8">
-                        <h3 class="text-2xl font-bold text-gray-900 mb-2">Free</h3>
-                        <div class="flex items-baseline justify-center">
-                            <span class="text-5xl font-bold text-gray-900">$0</span>
-                            <span class="text-xl text-gray-500 ml-2">/month</span>
-                        </div>
-                    </div>
-
-                    <ul class="space-y-4 mb-8">
-                        <li class="flex items-center">
-                            <span class="text-green-500 mr-3">✓</span>
-                            <span class="text-gray-700">1,000 API calls/month</span>
-                        </li>
-                        <li class="flex items-center">
-                            <span class="text-green-500 mr-3">✓</span>
-                            <span class="text-gray-700">Basic city data</span>
-                        </li>
-                        <li class="flex items-center">
-                            <span class="text-green-500 mr-3">✓</span>
-                            <span class="text-gray-700">Email support</span>
-                        </li>
-                        <li class="flex items-center">
-                            <span class="text-green-500 mr-3">✓</span>
-                            <span class="text-gray-700">API documentation</span>
-                        </li>
-                    </ul>
-
-                    <button onclick="showSignup()" class="w-full py-3 px-6 rounded-lg font-semibold transition-colors bg-gray-900 hover:bg-gray-800 text-white">
-                        Get Started Free
-                    </button>
-                </div>
-
-                <!-- Starter Plan -->
-                <div class="bg-white rounded-2xl shadow-xl border-2 border-blue-500 p-8 hover:shadow-2xl transition-all relative">
-                    <div class="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                        <span class="bg-blue-500 text-white px-4 py-2 rounded-full text-sm font-semibold">Most Popular</span>
-                    </div>
-                    
-                    <div class="text-center mb-8">
-                        <h3 class="text-2xl font-bold text-gray-900 mb-2">Starter</h3>
-                        <div class="flex items-baseline justify-center">
-                            <span class="text-5xl font-bold text-gray-900">$49</span>
-                            <span class="text-xl text-gray-500 ml-2">/month</span>
-                        </div>
-                    </div>
-
-                    <ul class="space-y-4 mb-8">
-                        <li class="flex items-center">
-                            <span class="text-blue-500 mr-3">✓</span>
-                            <span class="text-gray-700">10,000 API calls/month</span>
-                        </li>
-                        <li class="flex items-center">
-                            <span class="text-blue-500 mr-3">✓</span>
-                            <span class="text-gray-700">Full city dataset</span>
-                        </li>
-                        <li class="flex items-center">
-                            <span class="text-blue-500 mr-3">✓</span>
-                            <span class="text-gray-700">Priority support</span>
-                        </li>
-                        <li class="flex items-center">
-                            <span class="text-blue-500 mr-3">✓</span>
-                            <span class="text-gray-700">Usage analytics</span>
-                        </li>
-                        <li class="flex items-center">
-                            <span class="text-blue-500 mr-3">✓</span>
-                            <span class="text-gray-700">Investment insights</span>
-                        </li>
-                    </ul>
-
-                    <button onclick="showSignup()" class="w-full py-3 px-6 rounded-lg font-semibold transition-colors bg-blue-500 hover:bg-blue-600 text-white">
-                        Start Free Trial
-                    </button>
-                </div>
-
-                <!-- Professional Plan -->
-                <div class="bg-white rounded-2xl shadow-xl border-2 border-gray-200 p-8 hover:shadow-2xl transition-all">
-                    <div class="text-center mb-8">
-                        <h3 class="text-2xl font-bold text-gray-900 mb-2">Professional</h3>
-                        <div class="flex items-baseline justify-center">
-                            <span class="text-5xl font-bold text-gray-900">$199</span>
-                            <span class="text-xl text-gray-500 ml-2">/month</span>
-                        </div>
-                    </div>
-
-                    <ul class="space-y-4 mb-8">
-                        <li class="flex items-center">
-                            <span class="text-purple-500 mr-3">✓</span>
-                            <span class="text-gray-700">100,000 API calls/month</span>
-                        </li>
-                        <li class="flex items-center">
-                            <span class="text-purple-500 mr-3">✓</span>
-                            <span class="text-gray-700">Real-time data updates</span>
-                        </li>
-                        <li class="flex items-center">
-                            <span class="text-purple-500 mr-3">✓</span>
-                            <span class="text-gray-700">Custom integrations</span>
-                        </li>
-                        <li class="flex items-center">
-                            <span class="text-purple-500 mr-3">✓</span>
-                            <span class="text-gray-700">Phone support</span>
-                        </li>
-                        <li class="flex items-center">
-                            <span class="text-purple-500 mr-3">✓</span>
-                            <span class="text-gray-700">Historical data access</span>
-                        </li>
-                    </ul>
-
-                    <button onclick="showContactForm()" class="w-full py-3 px-6 rounded-lg font-semibold transition-colors bg-gray-900 hover:bg-gray-800 text-white">
-                        Contact Sales
-                    </button>
-                </div>
-            </div>
-
-            <div class="text-center mt-12">
-                <p class="text-gray-600">All plans include a 14-day free trial • No setup fees • Cancel anytime</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- CTA Section -->
-    <section id="contact" class="py-20 gradient-bg text-white">
-        <div class="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
-            <h2 class="text-4xl font-bold mb-4">Ready to Get Started?</h2>
-            <p class="text-xl text-blue-100 mb-8">Join thousands of developers using CityData API to build amazing applications</p>
-            <button onclick="showSignup()" class="bg-white text-blue-600 px-8 py-4 rounded-lg font-semibold hover:bg-gray-100 transition-colors text-lg">
-                Start Your Free Trial →
-            </button>
-            <p class="text-blue-200 mt-4">1,000 API calls per month • No credit card required</p>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="bg-gray-900 text-white py-12">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-                <div>
-                    <div class="flex items-center mb-4">
-                        <svg class="w-6 h-6 text-blue-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4"></path>
-                        </svg>
-                        <span class="text-xl font-bold">CityData API</span>
-                    </div>
-                    <p class="text-gray-400">The most comprehensive city data API for developers and businesses.</p>
-                </div>
-                
-                <div>
-                    <h3 class="font-semibold mb-4">Product</h3>
-                    <ul class="space-y-2 text-gray-400">
-                        <li><a href="#pricing" class="hover:text-white">Pricing</a></li>
-                        <li><a href="#docs" class="hover:text-white">Documentation</a></li>
-                        <li><a href="/health" class="hover:text-white">API Status</a></li>
-                    </ul>
-                </div>
-                
-                <div>
-                    <h3 class="font-semibold mb-4">Support</h3>
-                    <ul class="space-y-2 text-gray-400">
-                        <li><a href="mailto:support@citydata-api.com" class="hover:text-white">Email Support</a></li>
-                        <li><a href="#contact" class="hover:text-white">Contact</a></li>
-                        <li><a href="#" class="hover:text-white">Help Center</a></li>
-                    </ul>
-                </div>
-                
-                <div>
-                    <h3 class="font-semibold mb-4">API</h3>
-                    <ul class="space-y-2 text-gray-400">
-                        <li><a href="/api/v1/cities" class="hover:text-white">Live API</a></li>
-                        <li><a href="/health" class="hover:text-white">Health Check</a></li>
-                        <li><a href="#docs" class="hover:text-white">Documentation</a></li>
-                    </ul>
-                </div>
-            </div>
-            
-            <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
-                <p>&copy; 2025 CityData API. All rights reserved.</p>
-            </div>
-        </div>
-    </footer>
-
-    <!-- Signup Modal -->
-    <div id="signup-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
-        <div class="bg-white rounded-xl shadow-2xl p-8 max-w-md w-full mx-4">
-            <div class="text-center mb-6">
-                <h2 class="text-2xl font-bold text-gray-900 mb-2">Get Your API Key</h2>
-                <p class="text-gray-600">Start building with CityData API today</p>
-            </div>
-            
-            <form onsubmit="handleSignup(event)" class="space-y-4">
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
-                    <input type="email" id="signup-email" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="you@company.com">
-                </div>
-                
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Company Name</label>
-                    <input type="text" id="signup-company" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Your Company">
-                </div>
-                
-                <button type="submit" class="w-full bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 transition-colors font-semibold">
-                    Get Free API Key
-                </button>
-            </form>
-            
-            <button onclick="hideSignup()" class="mt-4 w-full text-gray-500 hover:text-gray-700">
-                Cancel
-            </button>
         </div>
     </div>
 
     <script>
-        // JavaScript functions
-        function scrollToSection(sectionId) {
-            document.getElementById(sectionId).scrollIntoView({
-                behavior: 'smooth'
-            });
-        }
-
-        function showSignup() {
-            document.getElementById('signup-modal').classList.remove('hidden');
-            document.getElementById('signup-modal').classList.add('flex');
-        }
-
-        function hideSignup() {
-            document.getElementById('signup-modal').classList.add('hidden');
-            document.getElementById('signup-modal').classList.remove('flex');
-        }
-
-        function handleSignup(event) {
-            event.preventDefault();
-            const email = document.getElementById('signup-email').value;
-            const company = document.getElementById('signup-company').value;
-            
-            // Generate a demo API key
-            const apiKey = 'cd_live_' + Math.random().toString(36).substring(2, 15);
-            
-            alert(`🎉 Success! Your API key: ${apiKey}\n\nSave this key and start making API calls!\n\nTest it at: /api/v1/cities/austin-tx`);
-            hideSignup();
-        }
-
-        function showContactForm() {
-            alert('📧 Contact us at: support@citydata-api.com\n\nOr call: +1 (555) 123-4567\n\nWe\'ll get back to you within 24 hours!');
-        }
-
         async function testAPI() {
-            const resultDiv = document.getElementById('api-result');
+            const resultDiv = document.getElementById('result');
+            resultDiv.style.display = 'block';
             resultDiv.innerHTML = '🔄 Testing API...';
             
             try {
@@ -476,34 +80,25 @@
                 
                 if (response.ok) {
                     const data = await response.json();
-                    resultDiv.innerHTML = `✅ API is working! Austin population: ${data.population?.toLocaleString() || 'N/A'}`;
+                    resultDiv.innerHTML = `✅ <strong>API Works!</strong><br>
+                        Austin, TX - Population: ${data.population?.toLocaleString()}<br>
+                        Median Income: $${data.median_income?.toLocaleString()}<br>
+                        Home Price: $${data.median_home_price?.toLocaleString()}`;
                 } else {
                     resultDiv.innerHTML = '❌ API test failed. Check your setup.';
                 }
             } catch (error) {
-                resultDiv.innerHTML = '❌ Connection error. Is your server running?';
+                resultDiv.innerHTML = '❌ Connection error: ' + error.message;
             }
         }
 
-        // Smooth scrolling for anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth'
-                    });
-                }
-            });
-        });
-
-        // Close modal when clicking outside
-        document.getElementById('signup-modal').addEventListener('click', function(e) {
-            if (e.target === this) {
-                hideSignup();
+        function signup() {
+            const email = prompt('Enter your email to get a free API key:');
+            if (email) {
+                const apiKey = 'cd_live_' + Math.random().toString(36).substring(2, 15);
+                alert(`🎉 Your API Key: ${apiKey}\n\nSave this and start making API calls!\n\nEmail: support@citydata-api.com for help`);
             }
-        });
+        }
     </script>
 </body>
 </html>
