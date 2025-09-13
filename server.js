@@ -4,6 +4,8 @@ const rateLimit = require('express-rate-limit');
 const helmet = require('helmet');
 const { Pool } = require('pg');
 require('dotenv').config();
+// Auto-load sample data on startup
+require('./load-sample-data.js');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
