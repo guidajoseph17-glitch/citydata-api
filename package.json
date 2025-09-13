@@ -26,7 +26,4 @@
   "keywords": ["api", "city-data", "real-estate", "investment"],
   "author": "Your Name",
   "license": "MIT"
-"scripts": {
-  "start": "node server.js",
-  "add-cities": "node scripts/add-cities.js"
 }
