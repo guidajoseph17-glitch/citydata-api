@@ -118,5 +118,17 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 </script>
+    <script>
+// Force assign click handlers
+setTimeout(() => {
+    document.querySelector('button[onclick*="testAPI"]').onclick = testAPI;
+    const buttons = document.querySelectorAll('.btn');
+    buttons.forEach(btn => {
+        if (btn.textContent.includes('Get Started') || btn.textContent.includes('Start Trial')) {
+            btn.onclick = signup;
+        }
+    });
+}, 1000);
+</script>
 </body>
 </html>
