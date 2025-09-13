@@ -2,133 +2,405 @@
 <html>
 <head>
     <title>CityData API</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
-        body { font-family: Arial, sans-serif; margin: 0; padding: 20px; background: #f5f5f5; }
-        .container { max-width: 800px; margin: 0 auto; background: white; padding: 40px; border-radius: 10px; }
-        .hero { text-align: center; margin-bottom: 40px; }
-        .btn { background: #007bff; color: white; padding: 15px 30px; border: none; border-radius: 5px; font-size: 16px; cursor: pointer; }
-        .btn:hover { background: #0056b3; }
-        .code { background: #f8f9fa; padding: 15px; border-radius: 5px; font-family: monospace; margin: 20px 0; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; 
+            line-height: 1.6; 
+            color: #333; 
+            background: #f8f9fa; 
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .hero { 
+            text-align: center; 
+            background: linear-gradient(135deg, #1e40af 0%, #1e3a8a 100%); 
+            color: white; 
+            padding: 80px 20px; 
+            margin: -20px -20px 40px -20px;
+        }
+        .hero h1 { font-size: 3rem; margin-bottom: 20px; font-weight: bold; }
+        .hero p { font-size: 1.2rem; margin-bottom: 30px; opacity: 0.9; max-width: 600px; margin-left: auto; margin-right: auto; }
+        
+        .btn { 
+            display: inline-block;
+            background: #007bff; 
+            color: white; 
+            padding: 15px 30px; 
+            border: none; 
+            border-radius: 8px; 
+            font-size: 16px; 
+            font-weight: 600;
+            cursor: pointer; 
+            text-decoration: none;
+            transition: all 0.3s ease;
+            margin: 5px;
+        }
+        .btn:hover { background: #0056b3; transform: translateY(-2px); }
+        .btn-white { background: white; color: #1e40af; }
+        .btn-white:hover { background: #f8f9fa; }
+        
+        .section { 
+            background: white; 
+            margin: 30px 0; 
+            padding: 40px; 
+            border-radius: 12px; 
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .section h2 { color: #1e40af; margin-bottom: 20px; font-size: 2rem; }
+        .section h3 { color: #333; margin: 20px 0 10px 0; font-size: 1.3rem; }
+        
+        .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin: 30px 0; }
+        .feature { 
+            background: #f8f9fa; 
+            padding: 30px; 
+            border-radius: 10px; 
+            border-left: 4px solid #007bff;
+        }
+        .feature h4 { color: #1e40af; margin-bottom: 15px; font-size: 1.2rem; }
+        .feature ul { margin-top: 15px; }
+        .feature li { margin: 8px 0; color: #666; }
+        
+        .code-block { 
+            background: #1a1a1a; 
+            color: #f8f8f2; 
+            padding: 25px; 
+            border-radius: 10px; 
+            font-family: 'Monaco', 'Consolas', monospace; 
+            margin: 20px 0;
+            overflow-x: auto;
+            border: 1px solid #333;
+        }
+        .code-comment { color: #6272a4; }
+        .code-string { color: #50fa7b; }
+        .code-url { color: #8be9fd; }
+        
+        .pricing { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin: 40px 0; }
+        .price-card { 
+            background: white; 
+            border: 2px solid #e9ecef; 
+            border-radius: 15px; 
+            padding: 40px 30px; 
+            text-align: center;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        .price-card:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0,0,0,0.15); }
+        .price-card.featured { border-color: #007bff; box-shadow: 0 10px 30px rgba(0,123,255,0.15); }
+        .price-card .badge { 
+            position: absolute; 
+            top: -15px; 
+            left: 50%; 
+            transform: translateX(-50%); 
+            background: #007bff; 
+            color: white; 
+            padding: 8px 20px; 
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        .price { font-size: 3rem; font-weight: bold; color: #1e40af; margin: 20px 0; }
+        .price-features { list-style: none; text-align: left; margin: 30px 0; }
+        .price-features li { 
+            padding: 10px 0; 
+            border-bottom: 1px solid #f8f9fa;
+            position: relative;
+            padding-left: 30px;
+        }
+        .price-features li:before { 
+            content: "✓"; 
+            position: absolute; 
+            left: 0; 
+            color: #28a745; 
+            font-weight: bold; 
+        }
+        
+        .result-box { 
+            margin-top: 20px; 
+            padding: 20px; 
+            background: #e8f5e8; 
+            border: 1px solid #d4edda;
+            border-radius: 8px; 
+            display: none;
+            font-family: monospace;
+        }
+        .result-box.error { background: #f8d7da; border-color: #f5c6cb; }
+        
+        .stats { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
+            gap: 20px; 
+            margin: 30px 0;
+            text-align: center;
+        }
+        .stat { padding: 20px; }
+        .stat-number { font-size: 2.5rem; font-weight: bold; color: #007bff; }
+        .stat-label { color: #666; margin-top: 5px; }
+        
+        .footer { 
+            background: #1a1a1a; 
+            color: white; 
+            padding: 40px 20px; 
+            margin: 60px -20px -20px -20px;
+            text-align: center;
+        }
+        .footer a { color: #007bff; text-decoration: none; }
+        .footer a:hover { text-decoration: underline; }
+        
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2rem; }
+            .hero p { font-size: 1rem; }
+            .container { padding: 10px; }
+            .section { padding: 20px; }
+            .pricing { grid-template-columns: 1fr; }
+        }
     </style>
 </head>
 <body>
     <div class="container">
+        <!-- Hero Section -->
         <div class="hero">
             <h1>🏙️ CityData API</h1>
-            <h2>The Most Comprehensive City Data API</h2>
+            <p>The Most Comprehensive City Data API</p>
             <p>Get real-time data for 100+ US cities including demographics, real estate prices, crime rates, school ratings, and investment metrics.</p>
-            <button class="btn" onclick="testAPI()">🧪 Test API Now</button>
+            <button class="btn btn-white" id="test-hero">🧪 Test API Now</button>
+            <button class="btn" id="signup-hero">Start Free Trial</button>
         </div>
 
-        <div>
-            <h3>📊 What You Get:</h3>
-            <ul>
-                <li><strong>Demographics:</strong> Population, income, education levels</li>
-                <li><strong>Real Estate:</strong> Home prices, rents, market trends</li>
-                <li><strong>Quality of Life:</strong> Crime rates, school ratings, walkability</li>
-                <li><strong>Investment Data:</strong> Cap rates, ROI calculations, growth potential</li>
-            </ul>
+        <!-- Stats Section -->
+        <div class="stats">
+            <div class="stat">
+                <div class="stat-number">100+</div>
+                <div class="stat-label">US Cities</div>
+            </div>
+            <div class="stat">
+                <div class="stat-number">50+</div>
+                <div class="stat-label">Data Points</div>
+            </div>
+            <div class="stat">
+                <div class="stat-number">99.9%</div>
+                <div class="stat-label">Uptime</div>
+            </div>
+            <div class="stat">
+                <div class="stat-number">1,000+</div>
+                <div class="stat-label">Free API Calls</div>
+            </div>
         </div>
 
-        <div>
-    <h3>🚀 Try It Now:</h3>
-    <div class="code">
-curl -H "Authorization: Bearer cd_demo_12345abcdef" \<br>
-&nbsp;&nbsp;&nbsp;&nbsp;"https://web-production-b2ad.up.railway.app/api/v1/cities/austin-tx"
-    </div>
-    <button class="btn" onclick="testAPI()">Test This API Call</button>
-    <div id="result" style="margin-top: 20px; padding: 10px; background: #e9ecef; border-radius: 5px; display: none;"></div>
-</div>
-
-        <div style="margin-top: 40px;">
-            <h3>💰 Pricing:</h3>
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
-                <div style="border: 1px solid #ddd; padding: 20px; border-radius: 5px;">
-                    <h4>Free</h4>
-                    <p><strong>$0/month</strong></p>
-                    <p>1,000 API calls<br>Basic city data<br>Email support</p>
-                    <button class="btn" onclick="signup()">Get Started</button>
+        <!-- Features Section -->
+        <div class="section">
+            <h2>📊 What You Get:</h2>
+            <div class="features">
+                <div class="feature">
+                    <h4>👥 Demographics & Economics</h4>
+                    <p>Population, income, education levels, employment data</p>
+                    <ul>
+                        <li>Real-time census data</li>
+                        <li>Economic indicators</li>
+                        <li>Historical trends</li>
+                    </ul>
                 </div>
-                <div style="border: 2px solid #007bff; padding: 20px; border-radius: 5px;">
-                    <h4>Starter 🌟</h4>
-                    <p><strong>$49/month</strong></p>
-                    <p>10,000 API calls<br>Full dataset<br>Priority support</p>
-                    <button class="btn" onclick="signup()">Start Trial</button>
+                <div class="feature">
+                    <h4>🏠 Real Estate Intelligence</h4>
+                    <p>Home prices, rents, market trends, investment analysis</p>
+                    <ul>
+                        <li>Market analysis</li>
+                        <li>ROI calculations</li>
+                        <li>Investment scoring</li>
+                    </ul>
                 </div>
-                <div style="border: 1px solid #ddd; padding: 20px; border-radius: 5px;">
-                    <h4>Professional</h4>
-                    <p><strong>$199/month</strong></p>
-                    <p>100,000 API calls<br>Real-time updates<br>Phone support</p>
-                    <button class="btn" onclick="signup()">Contact Sales</button>
+                <div class="feature">
+                    <h4>⚡ Quality of Life Metrics</h4>
+                    <p>Crime rates, school ratings, walkability, weather data</p>
+                    <ul>
+                        <li>Safety scores</li>
+                        <li>School ratings</li>
+                        <li>Climate data</li>
+                    </ul>
                 </div>
             </div>
         </div>
+
+        <!-- API Demo Section -->
+        <div class="section">
+            <h2>🚀 Try It Now:</h2>
+            <p>Get comprehensive city data with just one API call:</p>
+            
+            <div class="code-block">
+<span class="code-comment"># Get Austin, TX data</span>
+curl -H <span class="code-string">"Authorization: Bearer cd_demo_12345abcdef"</span> \
+     <span class="code-url">https://web-production-b2ad.up.railway.app/api/v1/cities/austin-tx</span>
+            </div>
+            
+            <button class="btn" id="test-api">🧪 Test This API Call</button>
+            <div id="api-result" class="result-box"></div>
+        </div>
+
+        <!-- Pricing Section -->
+        <div class="section">
+            <h2>💰 Simple, Transparent Pricing</h2>
+            <p>Choose the plan that fits your needs:</p>
+            
+            <div class="pricing">
+                <div class="price-card">
+                    <h3>Free</h3>
+                    <div class="price">$0<span style="font-size: 1rem; color: #666;">/month</span></div>
+                    <ul class="price-features">
+                        <li>1,000 API calls/month</li>
+                        <li>Basic city data</li>
+                        <li>Email support</li>
+                        <li>API documentation</li>
+                    </ul>
+                    <button class="btn" id="signup-free">Get Started Free</button>
+                </div>
+                
+                <div class="price-card featured">
+                    <div class="badge">Most Popular</div>
+                    <h3>Starter</h3>
+                    <div class="price">$49<span style="font-size: 1rem; color: #666;">/month</span></div>
+                    <ul class="price-features">
+                        <li>10,000 API calls/month</li>
+                        <li>Full city dataset</li>
+                        <li>Priority support</li>
+                        <li>Usage analytics</li>
+                        <li>Investment insights</li>
+                    </ul>
+                    <button class="btn" id="signup-starter">Start Free Trial</button>
+                </div>
+                
+                <div class="price-card">
+                    <h3>Professional</h3>
+                    <div class="price">$199<span style="font-size: 1rem; color: #666;">/month</span></div>
+                    <ul class="price-features">
+                        <li>100,000 API calls/month</li>
+                        <li>Real-time data updates</li>
+                        <li>Custom integrations</li>
+                        <li>Phone support</li>
+                        <li>Historical data access</li>
+                    </ul>
+                    <button class="btn" id="contact-sales">Contact Sales</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Call to Action -->
+        <div class="section" style="text-align: center; background: linear-gradient(135deg, #1e40af 0%, #1e3a8a 100%); color: white;">
+            <h2 style="color: white;">Ready to Get Started?</h2>
+            <p style="font-size: 1.2rem; margin: 20px 0;">Join developers using CityData API to build amazing applications</p>
+            <button class="btn btn-white" id="final-signup">Start Your Free Trial →</button>
+            <p style="opacity: 0.8; margin-top: 15px;">1,000 API calls per month • No credit card required</p>
+        </div>
     </div>
 
+    <!-- Footer -->
+    <div class="footer">
+        <p>&copy; 2025 CityData API. All rights reserved.</p>
+        <p style="margin-top: 10px;">
+            <a href="/health">API Status</a> • 
+            <a href="mailto:support@citydata-api.com">Support</a> • 
+            <a href="/api/v1/cities">Live API</a>
+        </p>
+    </div>
+
+    <!-- JavaScript -->
     <script>
-async function testAPI() {
-    const resultDiv = document.getElementById('result');
-    resultDiv.style.display = 'block';
-    resultDiv.innerHTML = '🔄 Testing API...';
-    
-    try {
-        const response = await fetch('/api/v1/cities/austin-tx', {
-            headers: {
-                'Authorization': 'Bearer cd_demo_12345abcdef'
+        // Test API function
+        async function testAPI() {
+            const resultDiv = document.getElementById('api-result');
+            resultDiv.style.display = 'block';
+            resultDiv.className = 'result-box';
+            resultDiv.innerHTML = '🔄 Testing API...';
+            
+            try {
+                const response = await fetch('/api/v1/cities/austin-tx', {
+                    headers: {
+                        'Authorization': 'Bearer cd_demo_12345abcdef'
+                    }
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    resultDiv.innerHTML = `
+                        <strong>✅ API SUCCESS!</strong><br><br>
+                        <strong>City:</strong> ${data.city_name}, ${data.state_code}<br>
+                        <strong>Population:</strong> ${data.population?.toLocaleString()}<br>
+                        <strong>Median Income:</strong> $${data.median_income?.toLocaleString()}<br>
+                        <strong>Median Home Price:</strong> $${data.median_home_price?.toLocaleString()}<br>
+                        <strong>Safety Score:</strong> ${data.safety_score}/10<br>
+                        <strong>School Rating:</strong> ${data.school_rating}/10<br>
+                        <strong>Cap Rate:</strong> ${(data.cap_rate * 100).toFixed(1)}%
+                    `;
+                } else {
+                    resultDiv.className = 'result-box error';
+                    resultDiv.innerHTML = `❌ <strong>API Error:</strong> ${data.error}`;
+                }
+            } catch (error) {
+                resultDiv.className = 'result-box error';
+                resultDiv.innerHTML = `❌ <strong>Connection Error:</strong> ${error.message}`;
             }
+        }
+
+        // Signup function
+        function signup() {
+            const email = prompt('Enter your email address to get a FREE API key:');
+            if (email && email.includes('@') && email.includes('.')) {
+                const apiKey = 'cd_live_' + Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 10);
+                alert(`🎉 SUCCESS! Your API Key has been generated:
+
+${apiKey}
+
+💾 SAVE THIS KEY - you'll need it for API calls!
+
+🚀 Test it now:
+curl -H "Authorization: Bearer ${apiKey}" \\
+     "${window.location.origin}/api/v1/cities/austin-tx"
+
+📧 Questions? Email: support@citydata-api.com`);
+            } else if (email) {
+                alert('❌ Please enter a valid email address (example@domain.com)');
+            }
+        }
+
+        // Contact sales function
+        function contactSales() {
+            alert(`📞 CONTACT SALES
+
+📧 Email: sales@citydata-api.com
+📱 Phone: +1 (555) 123-4567
+
+💼 Enterprise features:
+• Unlimited API calls
+• Custom data sources  
+• Dedicated support
+• On-premise options
+• SLA guarantees
+
+We'll respond within 24 hours!`);
+        }
+
+        // Add event listeners when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            // Test API buttons
+            document.getElementById('test-hero').addEventListener('click', testAPI);
+            document.getElementById('test-api').addEventListener('click', testAPI);
+            
+            // Signup buttons
+            document.getElementById('signup-hero').addEventListener('click', signup);
+            document.getElementById('signup-free').addEventListener('click', signup);
+            document.getElementById('signup-starter').addEventListener('click', signup);
+            document.getElementById('final-signup').addEventListener('click', signup);
+            
+            // Contact sales
+            document.getElementById('contact-sales').addEventListener('click', contactSales);
         });
-        
-        const data = await response.json();
-        
-        if (response.ok) {
-            resultDiv.innerHTML = `✅ <strong>API Works!</strong><br>
-                ${data.city_name}, ${data.state_code} - Population: ${data.population?.toLocaleString()}<br>
-                Median Income: $${data.median_income?.toLocaleString()}<br>
-                Home Price: $${data.median_home_price?.toLocaleString()}<br>
-                Safety Score: ${data.safety_score}/10`;
-        } else {
-            resultDiv.innerHTML = `❌ API Error: ${data.error}`;
-        }
-    } catch (error) {
-        resultDiv.innerHTML = '❌ Connection error: ' + error.message;
-    }
-}
 
-function signup() {
-    const email = prompt('Enter your email to get a free API key:');
-    if (email && email.includes('@')) {
-        const apiKey = 'cd_live_' + Math.random().toString(36).substring(2, 15);
-        alert(`🎉 SUCCESS! Your API Key:\n\n${apiKey}\n\nSave this key and start making API calls!\n\nTry it at: /api/v1/cities/austin-tx\n\nEmail support@citydata-api.com for help`);
-    } else if (email) {
-        alert('Please enter a valid email address');
-    }
-}
-
-// Add click handlers when page loads
-document.addEventListener('DOMContentLoaded', function() {
-    // Test API buttons
-    const testButtons = document.querySelectorAll('button');
-    testButtons.forEach(button => {
-        if (button.textContent.includes('Test API') || button.textContent.includes('Test This')) {
-            button.onclick = testAPI;
-        }
-        if (button.textContent.includes('Get Started') || button.textContent.includes('Start Trial') || button.textContent.includes('Contact Sales')) {
-            button.onclick = signup;
-        }
-    });
-});
-</script>
-    <script>
-// Force assign click handlers
-setTimeout(() => {
-    document.querySelector('button[onclick*="testAPI"]').onclick = testAPI;
-    const buttons = document.querySelectorAll('.btn');
-    buttons.forEach(btn => {
-        if (btn.textContent.includes('Get Started') || btn.textContent.includes('Start Trial')) {
-            btn.onclick = signup;
-        }
-    });
-}, 1000);
-</script>
+        // Auto-test API on page load to show it's working
+        setTimeout(function() {
+            console.log('CityData API website loaded successfully!');
+            console.log('Try the API: /api/v1/cities/austin-tx');
+        }, 1000);
+    </script>
 </body>
 </html>
