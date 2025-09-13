@@ -66,39 +66,57 @@ curl -H "Authorization: Bearer cd_demo_12345abcdef" \<br>
     </div>
 
     <script>
-        async function testAPI() {
-            const resultDiv = document.getElementById('result');
-            resultDiv.style.display = 'block';
-            resultDiv.innerHTML = '🔄 Testing API...';
-            
-            try {
-                const response = await fetch('/api/v1/cities/austin-tx', {
-                    headers: {
-                        'Authorization': 'Bearer cd_demo_12345abcdef'
-                    }
-                });
-                
-                if (response.ok) {
-                    const data = await response.json();
-                    resultDiv.innerHTML = `✅ <strong>API Works!</strong><br>
-                        Austin, TX - Population: ${data.population?.toLocaleString()}<br>
-                        Median Income: $${data.median_income?.toLocaleString()}<br>
-                        Home Price: $${data.median_home_price?.toLocaleString()}`;
-                } else {
-                    resultDiv.innerHTML = '❌ API test failed. Check your setup.';
-                }
-            } catch (error) {
-                resultDiv.innerHTML = '❌ Connection error: ' + error.message;
+async function testAPI() {
+    const resultDiv = document.getElementById('result');
+    resultDiv.style.display = 'block';
+    resultDiv.innerHTML = '🔄 Testing API...';
+    
+    try {
+        const response = await fetch('/api/v1/cities/austin-tx', {
+            headers: {
+                'Authorization': 'Bearer cd_demo_12345abcdef'
             }
+        });
+        
+        const data = await response.json();
+        
+        if (response.ok) {
+            resultDiv.innerHTML = `✅ <strong>API Works!</strong><br>
+                ${data.city_name}, ${data.state_code} - Population: ${data.population?.toLocaleString()}<br>
+                Median Income: $${data.median_income?.toLocaleString()}<br>
+                Home Price: $${data.median_home_price?.toLocaleString()}<br>
+                Safety Score: ${data.safety_score}/10`;
+        } else {
+            resultDiv.innerHTML = `❌ API Error: ${data.error}`;
         }
+    } catch (error) {
+        resultDiv.innerHTML = '❌ Connection error: ' + error.message;
+    }
+}
 
-        function signup() {
-            const email = prompt('Enter your email to get a free API key:');
-            if (email) {
-                const apiKey = 'cd_live_' + Math.random().toString(36).substring(2, 15);
-                alert(`🎉 Your API Key: ${apiKey}\n\nSave this and start making API calls!\n\nEmail: support@citydata-api.com for help`);
-            }
+function signup() {
+    const email = prompt('Enter your email to get a free API key:');
+    if (email && email.includes('@')) {
+        const apiKey = 'cd_live_' + Math.random().toString(36).substring(2, 15);
+        alert(`🎉 SUCCESS! Your API Key:\n\n${apiKey}\n\nSave this key and start making API calls!\n\nTry it at: /api/v1/cities/austin-tx\n\nEmail support@citydata-api.com for help`);
+    } else if (email) {
+        alert('Please enter a valid email address');
+    }
+}
+
+// Add click handlers when page loads
+document.addEventListener('DOMContentLoaded', function() {
+    // Test API buttons
+    const testButtons = document.querySelectorAll('button');
+    testButtons.forEach(button => {
+        if (button.textContent.includes('Test API') || button.textContent.includes('Test This')) {
+            button.onclick = testAPI;
         }
-    </script>
+        if (button.textContent.includes('Get Started') || button.textContent.includes('Start Trial') || button.textContent.includes('Contact Sales')) {
+            button.onclick = signup;
+        }
+    });
+});
+</script>
 </body>
 </html>
