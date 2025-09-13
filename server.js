@@ -21,6 +21,16 @@ app.use(helmet());
 app.use(cors());
 app.use(express.json());
 
+const path = require('path'); // Add this at the top with other requires
+
+// Serve static files
+app.use(express.static('public'));
+
+// Serve the website at root
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
 // Serve static files
 app.use(express.static('public'));
 
