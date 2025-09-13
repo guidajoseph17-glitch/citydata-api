@@ -455,7 +455,10 @@ app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).json({ error: 'Something went wrong!' });
 });
-
+app.get('/cities-list', async (req, res) => {
+  const result = await pool.query('SELECT city_name, state_code FROM cities ORDER BY city_name');
+  res.json(result.rows);
+});
 // 404 handler
 app.use((req, res) => {
   res.status(404).json({ 
