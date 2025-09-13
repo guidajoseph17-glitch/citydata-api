@@ -480,5 +480,26 @@ app.listen(PORT, () => {
   console.log(`🔑 Demo API key: cd_demo_12345abcdef`);
   console.log(`🌐 Website: http://localhost:${PORT}/`);
 });
-
+// Auto-add cities on first startup
+setTimeout(async () => {
+  try {
+    // Check if we already have more than 10 cities
+    const cityCount = await pool.query('SELECT COUNT(*) as count FROM cities');
+    
+    if (cityCount.rows[0].count < 10) {
+      console.log('Adding 50 cities to database...');
+      
+      const fs = require('fs');
+      const sql = fs.readFileSync('./database/add-50-cities.sql', 'utf8');
+      await pool.query(sql);
+      
+      const newCount = await pool.query('SELECT COUNT(*) as count FROM cities');
+      console.log(`Success! Now have ${newCount.rows[0].count} cities total`);
+    } else {
+      console.log(`Database already has ${cityCount.rows[0].count} cities`);
+    }
+  } catch (error) {
+    console.log('City expansion note:', error.message);
+  }
+}, 10000); // Wait 10 seconds after server starts
 module.exports = app;
