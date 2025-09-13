@@ -2,8 +2,8 @@ const express = require('express');
 const cors = require('cors');
 const rateLimit = require('express-rate-limit');
 const helmet = require('helmet');
+const path = require('path');
 const { Pool } = require('pg');
-const path = require('path'); // ADD THIS LINE
 require('dotenv').config();
 
 const app = express();
@@ -20,23 +20,8 @@ app.use(helmet());
 app.use(cors());
 app.use(express.json());
 
-const path = require('path'); // Add this at the top with other requires
-
-// Serve static files
-app.use(express.static('public'));
-
-// Serve the website at root
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
-});
-
-// Serve static files
-app.use(express.static('public'));
-
-// Serve the website at root
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
-});
+// Serve static files from public directory
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Rate limiting
 const createRateLimit = (windowMs, max) => rateLimit({
@@ -57,7 +42,7 @@ const validateApiKey = async (req, res, next) => {
   
   const apiKey = authHeader.substring(7);
   
-  // For demo - accept the demo key
+  // Demo API key for testing
   if (apiKey === 'cd_demo_12345abcdef') {
     req.user = { customer_id: 'demo_001', subscription_tier: 'free', monthly_limit: 1000 };
     return next();
@@ -81,7 +66,12 @@ const validateApiKey = async (req, res, next) => {
   }
 };
 
-// Routes
+// Root route - serve the landing page
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
+// Health check
 app.get('/health', (req, res) => {
   res.json({ 
     status: 'healthy', 
@@ -122,8 +112,20 @@ app.get('/api/v1/cities/:cityId', validateApiKey, async (req, res) => {
       return res.status(404).json({ 
         error: 'City not found',
         suggestion: 'Try searching with /api/v1/cities/search',
-        available_cities: ['austin-tx', 'denver-co', 'nashville-tn', 'raleigh-nc', 'tampa-fl']
+        available_cities: ['austin-tx', 'denver-co', 'nashville-tn']
       });
+    }
+    
+    // Log API usage (only if not demo key)
+    if (req.user.customer_id !== 'demo_001') {
+      try {
+        await pool.query(`
+          INSERT INTO api_usage (customer_id, api_key_id, endpoint, method, status_code)
+          VALUES ($1, $2, $3, $4, $5)
+        `, [req.user.customer_id, req.headers.authorization.substring(7), req.path, req.method, 200]);
+      } catch (logError) {
+        console.error('Usage logging error:', logError);
+      }
     }
     
     res.json({
@@ -138,6 +140,34 @@ app.get('/api/v1/cities/:cityId', validateApiKey, async (req, res) => {
   } catch (error) {
     console.error('City lookup error:', error);
     res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// List all cities
+app.get('/api/v1/cities', validateApiKey, async (req, res) => {
+  try {
+    const result = await pool.query(`
+      SELECT c.city_id, c.city_name, c.state_code, c.population,
+             r.median_home_price, q.safety_score, q.school_rating
+      FROM cities c
+      LEFT JOIN real_estate r ON c.city_id = r.city_id
+      LEFT JOIN quality_of_life q ON c.city_id = q.city_id
+      ORDER BY c.population DESC
+      LIMIT 100
+    `);
+    
+    res.json({
+      cities: result.rows,
+      total_count: result.rows.length,
+      meta: {
+        generated_at: new Date().toISOString(),
+        api_version: '1.0'
+      }
+    });
+    
+  } catch (error) {
+    console.error('Cities list error:', error);
+    res.status(500).json({ error: 'Failed to fetch cities' });
   }
 });
 
@@ -386,35 +416,32 @@ app.post('/api/v1/cities/compare', validateApiKey, async (req, res) => {
   }
 });
 
-// List all available cities
-app.get('/api/v1/cities', validateApiKey, async (req, res) => {
+// Admin: Usage statistics (simple version)
+app.get('/admin/stats', async (req, res) => {
   try {
-    const result = await pool.query(`
-      SELECT c.city_id, c.city_name, c.state_code, c.population,
-             r.median_home_price, q.safety_score
-      FROM cities c
-      LEFT JOIN real_estate r ON c.city_id = r.city_id
-      LEFT JOIN quality_of_life q ON c.city_id = q.city_id
-      ORDER BY c.population DESC
-      LIMIT 100
+    const stats = await pool.query(`
+      SELECT 
+        COUNT(*) as total_requests,
+        COUNT(DISTINCT customer_id) as active_customers
+      FROM api_usage 
+      WHERE request_time >= NOW() - INTERVAL '30 days'
     `);
     
     res.json({
-      cities: result.rows,
-      total_count: result.rows.length,
-      meta: {
-        generated_at: new Date().toISOString(),
-        api_version: '1.0'
-      }
+      usage_stats: stats.rows[0] || { total_requests: 0, active_customers: 0 },
+      generated_at: new Date().toISOString()
     });
     
   } catch (error) {
-    console.error('Cities list error:', error);
-    res.status(500).json({ error: 'Failed to fetch cities' });
+    console.error('Stats error:', error);
+    res.json({ 
+      usage_stats: { total_requests: 0, active_customers: 0 },
+      error: 'Stats unavailable'
+    });
   }
 });
 
-// Error handling
+// Error handling middleware
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).json({ error: 'Something went wrong!' });
@@ -442,6 +469,7 @@ app.listen(PORT, () => {
   console.log(`📊 Environment: ${process.env.NODE_ENV || 'development'}`);
   console.log(`🔗 Health check: http://localhost:${PORT}/health`);
   console.log(`🔑 Demo API key: cd_demo_12345abcdef`);
+  console.log(`🌐 Website: http://localhost:${PORT}/`);
 });
 
 module.exports = app;
